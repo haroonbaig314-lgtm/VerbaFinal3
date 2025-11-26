@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verba - Your Pocket-Sized AI Speaking Coach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #2d3436;
+            overflow-x: hidden;
+            background: #fafafa;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background: rgba(30, 58, 46, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a2e 0%, #2d5a44 50%, #3d6a54 100%);
+            color: white;
+            padding: 140px 2rem 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23f5f3ed"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%23f5f3ed"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23f5f3ed"/></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #ffffff 0%, #e8f5e9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .hero > p:not(.tagline) {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #1e3a2e;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #1e3a2e;
+        }
+
+        .problem {
+            padding: 100px 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fafafa;
+        }
+
+        .problem h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #1e3a2e;
+            font-weight: 800;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .problem-card {
+            padding: 2.5rem;
+            border-left: 5px solid #2d5a44;
+            background: white;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .problem-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border-left-color: #3d6a54;
+        }
+
+        .problem-card h3 {
+            color: #2d5a44;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .problem-card p {
+            color: #636e72;
+            line-height: 1.8;
+        }
+
+        .features {
+            background: linear-gradient(135deg, #1e3a2e 0%, #2d5a44 100%);
+            color: white;
+            padding: 100px 2rem;
+            position: relative;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23fafafa" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>') no-repeat top;
+            background-size: cover;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+            color: #1e1e1e;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.4s ease;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2d5a44, #3d6a54, #2d5a44);
+            border-radius: 20px 20px 0 0;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(45, 90, 68, 0.15);
+            border-color: #2d5a44;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #1e3a2e;
+        }
+
+        .feature-card p {
+            line-height: 1.8;
+            color: #636e72;
+        }
+
+        .demo-section {
+            padding: 100px 2rem;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .demo-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            background: rgba(45, 90, 68, 0.1);
+            border: 1px solid rgba(45, 90, 68, 0.3);
+            color: #2d5a44;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .demo-section h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #1e3a2e;
+        }
+
+        .demo-section h2 .highlight {
+            color: #2d5a44;
+        }
+
+        .demo-subtitle {
+            color: #636e72;
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .demo-card {
+            background: #fafafa;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .demo-card:hover {
+            border-color: #2d5a44;
+            box-shadow: 0 12px 40px rgba(45, 90, 68, 0.15);
+        }
+
+        .visualizer-container {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .visualizer-bar {
+            width: 6px;
+            background: #2d5a44;
+            border-radius: 3px;
+            transition: all 0.1s ease-in-out;
+        }
+
+        .visualizer-bar.active {
+            animation: musicBar 0.5s ease-in-out infinite;
+        }
+
+        @keyframes musicBar {
+            0%, 100% { height: 10%; }
+            50% { height: 100%; }
+        }
+
+        .timer {
+            font-size: 3.5rem;
+            font-family: 'Courier New', monospace;
+            font-weight: 800;
+            color: #1e3a2e;
+            margin-bottom: 2rem;
+        }
+
+        .counters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .counter-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 2rem 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .counter-card:hover {
+            border-color: #2d5a44;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(45, 90, 68, 0.15);
+        }
+
+        .counter-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e3a2e;
+            margin-bottom: 0.5rem;
+        }
+
+        .counter-label {
+            font-size: 0.75rem;
+            color: #2d5a44;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .transcript-box {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1.5rem;
+            min-height: 100px;
+            text-align: left;
+            color: #2d3436;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .transcript-placeholder {
+            color: #9ca3af;
+        }
+
+        .mic-button {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            text-decoration: none;
+        }
+
+        .mic-button:hover {
+            transform: scale(1.05);
+        }
+
+        .mic-button:active {
+            transform: scale(0.95);
+        }
+
+        .mic-button.inactive {
+            background: #2d5a44;
+            border-color: #3d6a54;
+            box-shadow: 0 10px 40px rgba(45, 90, 68, 0.3);
+        }
+
+        .mic-button.active {
+            background: #dc2626;
+            border-color: #f87171;
+            box-shadow: 0 10px 40px rgba(220, 38, 38, 0.3);
+        }
+
+        .mic-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .mic-button.inactive .mic-icon {
+            color: white;
+        }
+
+        .mic-button.active .mic-icon {
+            color: white;
+        }
+
+        .button-label {
+            color: #636e72;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .feedback-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: left;
+            display: none;
+        }
+
+        .feedback-section.visible {
+            display: block;
+        }
+
+        .feedback-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e3a2e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feedback-content {
+            color: #2d3436;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .feedback-loading {
+            color: #636e72;
+            font-style: italic;
+        }
+
+        .comparison {
+            padding: 100px 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .comparison h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #1e3a2e;
+            font-weight: 800;
+        }
+
+        .comparison-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #636e72;
+            margin-bottom: 3rem;
+        }
+
+        .comparison-table {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        th, td {
+            padding: 1.25rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        th:first-child,
+        td:first-child {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        th {
+            background: white;
+            color: #2d3436;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 2px solid #e8e8e8;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        tbody tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .highlight-col {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            font-weight: 700;
+            position: relative;
+            color: #1e3a2e;
+        }
+
+        thead .highlight-col {
+            background: linear-gradient(135deg, #2d5a44 0%, #1e3a2e 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            position: relative;
+            padding-top: 3.5rem;
+        }
+
+        thead .highlight-col::before {
+            content: 'BEST CHOICE';
+            position: absolute;
+            top: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #3d6a54 0%, #2d5a44 100%);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(45, 90, 68, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .checkmark {
+            color: #2d5a44;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .highlight-col .checkmark {
+            color: #2d5a44;
+        }
+
+        .cross {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .testimonials {
+            padding: 100px 0;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .testimonials h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #1e3a2e;
+            font-weight: 800;
+        }
+
+        .testimonials-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #636e72;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .testimonials-scroll-wrapper {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        .testimonials-scroll-wrapper::before,
+        .testimonials-scroll-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .testimonials-scroll-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right, white, transparent);
+        }
+
+        .testimonials-scroll-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left, white, transparent);
+        }
+
+        .testimonials-track {
+            display: flex;
+            gap: 2rem;
+            animation: scroll 30s linear infinite;
+            width: fit-content;
+        }
+
+        .testimonials-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .testimonials-grid {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: #fafafa;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e8e8e8;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            min-width: 380px;
+            max-width: 380px;
+            flex-shrink: 0;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-color: #d0d0d0;
+        }
+
+        .testimonial-stars {
+            color: #ffd700;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .testimonial-text {
+            font-size: 1rem;
+            margin-bottom: auto;
+            color: #2d3436;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+
+        .testimonial-footer {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #e8e8e8;
+            flex-shrink: 0;
+        }
+
+        .testimonial-info {
+            flex: 1;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #1e3a2e;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .testimonial-role {
+            font-size: 0.85rem;
+            color: #636e72;
+        }
+
+        .final-cta {
+            background: linear-gradient(135deg, #1e3a2e 0%, #2d5a44 100%);
+            padding: 100px 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            bottom: -200px;
+            left: -200px;
+            border-radius: 50%;
+        }
+
+        .final-cta h2 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-cta p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-cta .cta-buttons {
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-cta .btn-primary {
+            background: white;
+            color: #1e3a2e;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+
+        .final-cta .btn-primary:hover {
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+        }
+
+        footer {
+            background: #1e3a2e;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .footer-links {
+            margin-top: 1.5rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            opacity: 0.8;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+                letter-spacing: -1px;
+            }
+
+            .hero .tagline {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .problem h2, .features h2, .comparison h2, .final-cta h2, .testimonials h2 {
+                font-size: 2rem;
+            }
+
+            .final-cta h2 {
+                font-size: 2.2rem;
+            }
+
+            .demo-section h2 {
+                font-size: 2rem;
+            }
+
+            .timer {
+                font-size: 2.5rem;
+            }
+
+            .counters-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .counter-card {
+                padding: 1.5rem 0.5rem;
+            }
+
+            .counter-number {
+                font-size: 2rem;
+            }
+
+            .demo-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .mic-button {
+                width: 80px;
+                height: 80px;
+            }
+
+            .testimonial-card {
+                padding: 1.5rem;
+                min-width: 300px;
+                max-width: 300px;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            th:first-child,
+            td:first-child {
+                position: sticky;
+                left: 0;
+                background: white;
+                z-index: 1;
+            }
+
+            th {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .testimonial-card {
+                min-width: 340px;
+                max-width: 340px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">VERBA</div>
+            <div class="nav-links">
+                <a href="javascript:void(0)" onclick="document.getElementById('demo').scrollIntoView({behavior: 'smooth'})">Live Demo</a>
+                <a href="javascript:void(0)" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Features</a>
+                <a href="javascript:void(0)" onclick="document.getElementById('pricing').scrollIntoView({behavior: 'smooth'})">Pricing</a>
+                <a href="https://www.instagram.com/verbaspeech/" target="_blank">Instagram</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>VERBA</h1>
+            <p class="tagline">Your Pocket-Sized AI Speaking Coach</p>
+            <p>Master public speaking with real-time AI feedback. Say goodbye to "um," "like," and nervous pacing.</p>
+            <div class="cta-buttons">
+                <a href="https://verba-mvp-c9fs.glide.page/dl/fd1519" class="btn btn-primary" target="_blank">Try the MVP</a>
+                <a href="https://www.instagram.com/verbaspeech/" class="btn btn-secondary" target="_blank">Follow @verbaspeech</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="problem">
+        <h2>The Problem We're Solving</h2>
+        <div class="problem-grid">
+            <div class="problem-card">
+                <h3>Public Speaking Anxiety</h3>
+                <p>Lack of clarity and confidence are major barriers to effective communication. Most people struggle but have nowhere to turn for help.</p>
+            </div>
+            <div class="problem-card">
+                <h3>Common Speaking Issues</h3>
+                <p>Speakers battle with filler words like "like" and "um," inconsistent tone, poor pacing, and lack of vocal clarity that undermine even the best ideas.</p>
+            </div>
+            <div class="problem-card">
+                <h3>Existing Tools Fall Short</h3>
+                <p>Current solutions provide delayed or fragmented feedback, missing the opportunity for immediate correction when it matters most.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2>How Verba Helps You Speak Better</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Real-Time Feedback</h3>
+                    <p>Instant detection of filler words and pacing issues as you speak, with gentle haptic cues to help you self-correct.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Personalized Analytics</h3>
+                    <p>Track your progress over time with detailed insights on your speaking patterns and improvement areas.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>AI-Powered Coaching</h3>
+                    <p>Powered by Whisper and ChatGPT API to provide tailored feedback specific to your speaking style and goals.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Mobile-First Design</h3>
+                    <p>Practice anywhere, anytime. Verba fits in your pocket and works seamlessly on any mobile device.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Affordable Access</h3>
+                    <p>At just $6/month with a planned freemium model, get professional coaching at a fraction of traditional costs.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Coach Packs Marketplace</h3>
+                    <p>Access specialized coaching for different scenarios: interviews, presentations, sales pitches, and more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="demo-section" id="demo">
+        <div class="demo-container">
+            <div class="demo-badge">Interactive Live Demo</div>
+            <h2>Experience the <span class="highlight">Difference</span></h2>
+            <p class="demo-subtitle">
+                Click the mic to start, allow access, and start speaking naturally.
+            </p>
+
+            <div class="demo-card">
+                <div class="visualizer-container" id="visualizer"></div>
+                
+                <div class="timer" id="timer">0:00</div>
+
+                <div class="counters-grid">
+                    <div class="counter-card">
+                        <div class="counter-number" id="count-um">0</div>
+                        <div class="counter-label">UM</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-number" id="count-like">0</div>
+                        <div class="counter-label">LIKE</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-number" id="count-uh">0</div>
+                        <div class="counter-label">UH</div>
+                    </div>
+                    <div class="counter-card">
+                        <div class="counter-number" id="count-stutter">0</div>
+                        <div class="counter-label">STUTTER</div>
+                    </div>
+                </div>
+
+                <div class="transcript-box" id="transcript">
+                    <span class="transcript-placeholder">→ Waiting for speech input...</span>
+                </div>
+
+                <button class="mic-button inactive" id="micButton">
+                    <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                </button>
+                <p class="button-label" id="buttonLabel">Tap to Start Analysis</p>
+
+                <div class="feedback-section" id="feedbackSection">
+                    <div class="feedback-title">
+                        <span>💬 AI Coach Feedback</span>
+                    </div>
+                    <div class="feedback-content" id="feedbackContent">
+                        <p class="feedback-loading">Analyzing your speech...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="comparison" id="pricing">
+        <h2>Why Choose Verba?</h2>
+        <p class="comparison-subtitle">See how Verba compares to traditional coaching and other apps</p>
+        <div class="comparison-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Traditional Coaching</th>
+                        <th>Speech Apps</th>
+                        <th>Online Courses</th>
+                        <th class="highlight-col">Verba</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Real-Time Feedback</td>
+                        <td><span class="checkmark">✔</span></td>
+                        <td><span class="cross">✖</span></td>
+                        <td><span class="cross">✖</span></td>
+                        <td class="highlight-col"><span class="checkmark">✔</span></td>
+                    </tr>
+                    <tr>
+                        <td>Personalized Analytics</td>
+                        <td><span class="checkmark">✔</span></td>
+                        <td><span class="checkmark">✔</span></td>
+                        <td><span class="cross">✖</span></td>
+                        <td class="highlight-col"><span class="checkmark">✔</span></td>
+                    </tr>
+                    <tr>
+                        <td>Cost Effective</td>
+                        <td><span class="cross">✖</span></td>
+                        <td><span class="cross">✖</span></td>
+                        <td><span class="checkmark">✔</span></td>
+                        <td class="highlight-col"><span class="checkmark">✔</span></td>
+                    </tr>
+                    <tr>
+                        <td>Accessible 24/7</td>
+                        <td><span class="cross">✖</span></td>
+                        <td><span class="checkmark">✔</span></td>
+                        <td><span class="checkmark">✔</span></td>
+                        <td class="highlight-col"><span class="checkmark">✔</span></td>
+                    </tr>
+                    <tr>
+                        <td>Haptic Feedback</td>
+                        <td><span class="cross">✖</span></td>
+                        <td><span class="cross">✖</span></td>
+                        <td><span class="cross">✖</span></td>
+                        <td class="highlight-col"><span class="checkmark">✔</span></td>
+                    </tr>
+                    <tr>
+                        <td>Monthly Price</td>
+                        <td>$100+</td>
+                        <td>$12–45</td>
+                        <td>$12+</td>
+                        <td class="highlight-col"><strong>$6</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="testimonials-container">
+            <h2>What People Are Saying</h2>
+            <p class="testimonials-subtitle">See what students and educators think about the Verba concept</p>
+        </div>
+        <div class="testimonials-scroll-wrapper">
+            <div class="testimonials-track">
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"I used it for practice, and seeing the errors I was making was really eye opening"</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-avatar"></div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-author">Danny T.</p>
+                                <p class="testimonial-role">3rd Year Student, Northeastern</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"I would like to have a ping or notification every time I do when I practice, although not all the time"</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-avatar"></div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-author">David L.</p>
+                                <p class="testimonial-role">Student, Northeastern</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"This is clearly a problem space"</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-avatar"></div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-author">Aleks Gollu</p>
+                                <p class="testimonial-role">Innovation Professor, Northeastern</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"As a person who stutters a lot, I love the idea of Verba and would be willing to try it out."</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-avatar"></div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-author">Jacob B.</p>
+                                <p class="testimonial-role">1st Year Student, Northeastern</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"I used it for practice, and seeing the errors I was making was really eye opening"</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-avatar"></div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-author">Danny T.</p>
+                                <p class="testimonial-role">3rd Year Student, Northeastern</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"I would like to have a ping or notification every time I do when I practice, although not all the time"</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-avatar"></div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-author">David L.</p>
+                                <p class="testimonial-role">Student, Northeastern</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"This is clearly a problem space"</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-avatar"></div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-author">Aleks Gollu</p>
+                                <p class="testimonial-role">Innovation Professor, Northeastern</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"As a person who stutters a lot, I love the idea of Verba and would be willing to try it out."</p>
+                        <div class="testimonial-footer">
+                            <div class="testimonial-avatar"></div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-author">Jacob B.</p>
+                                <p class="testimonial-role">1st Year Student, Northeastern</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <h2>Ready to Speak with Confidence?</h2>
+        <p>Join hundreds of students and professionals who are transforming their communication skills with Verba. Start practicing today.</p>
+        <div class="cta-buttons">
+            <a href="https://verba-mvp-c9fs.glide.page/dl/fd1519" class="btn btn-primary" target="_blank">Try Verba Now</a>
+        </div>
+        <p style="margin-top: 2rem; font-size: 0.9rem; color: rgba(255,255,255,0.7); position: relative; z-index: 1;">Planned pricing: $6/month with freemium option</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Verba. Built by Harrison Cribbins, Haroon Baig, Lucy Ostapovich, and Carleigh Bianco.</p>
+        <div class="footer-links">
+            <a href="https://www.instagram.com/verbaspeech/" target="_blank">Instagram</a>
+            <a href="https://verba-mvp-c9fs.glide.page/dl/fd1519" target="_blank">Try MVP</a>
+        </div>
+    </footer>
+
+    <script>
+        let demoIsRecording = false;
+        let demoRecognition = null;
+        let demoTimerInterval = null;
+        let demoDuration = 0;
+        let demoFillerCounts = { um: 0, like: 0, uh: 0, stutter: 0 };
+        let previousFillerCounts = { um: 0, like: 0, uh: 0, stutter: 0 };
+        let fullTranscript = ''; // Accumulates all speech
+
+        // Create buzz sound using Web Audio API
+        function playBuzzSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.value = 120;
+
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+        }
+
+        const visualizer = document.getElementById('visualizer');
+        for (let i = 0; i < 20; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'visualizer-bar';
+            bar.style.height = '4px';
+            visualizer.appendChild(bar);
+        }
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            demoRecognition = new SpeechRecognition();
+            demoRecognition.continuous = true;
+            demoRecognition.interimResults = true;
+
+            demoRecognition.onresult = (event) => {
+                let interimTranscript = '';
+                
+                // Rebuild full transcript from all final results
+                fullTranscript = '';
+                for (let i = 0; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        fullTranscript += event.results[i][0].transcript + ' ';
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+
+                // Display the accumulated transcript
+                const displayText = (fullTranscript + interimTranscript).trim();
+                document.getElementById('transcript').innerHTML = displayText || '<span class="transcript-placeholder">→ Waiting for speech input...</span>';
+                
+                // Analyze the complete accumulated transcript
+                analyzeDemoSpeech((fullTranscript + interimTranscript).toLowerCase());
+            };
+
+            demoRecognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                stopDemoRecording();
+            };
+        }
+
+        function analyzeDemoSpeech(text) {
+            const ums = (text.match(/\bum\b/g) || []).length;
+            const likes = (text.match(/\blike\b/g) || []).length;
+            const uhs = (text.match(/\buh\b/g) || []).length;
+            
+            // Detect stuttering (repeated words) - including single letters like "I"
+            const words = text.split(/\s+/).filter(w => w.length > 0);
+            let stutterCount = 0;
+            for (let i = 1; i < words.length; i++) {
+                // Check if current word is the same as previous word
+                if (words[i] === words[i-1]) {
+                    stutterCount++;
+                }
+            }
+
+            // Check if "like" or stutter count increased - if so, play buzz
+            if (likes > previousFillerCounts.like || stutterCount > previousFillerCounts.stutter) {
+                playBuzzSound();
+            }
+
+            // Update counts
+            demoFillerCounts = { um: ums, like: likes, uh: uhs, stutter: stutterCount };
+            previousFillerCounts = { um: ums, like: likes, uh: uhs, stutter: stutterCount };
+            
+            document.getElementById('count-um').textContent = ums;
+            document.getElementById('count-like').textContent = likes;
+            document.getElementById('count-uh').textContent = uhs;
+            document.getElementById('count-stutter').textContent = stutterCount;
+        }
+
+        function formatDemoTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function animateDemoVisualizer() {
+            const bars = visualizer.querySelectorAll('.visualizer-bar');
+            bars.forEach((bar, i) => {
+                if (demoIsRecording) {
+                    bar.classList.add('active');
+                    const height = Math.max(20, Math.random() * 100);
+                    bar.style.height = `${height}%`;
+                    bar.style.animationDelay = `${i * 0.05}s`;
+                } else {
+                    bar.classList.remove('active');
+                    bar.style.height = '4px';
+                }
+            });
+        }
+
+        function startDemoRecording() {
+            if (!demoRecognition) {
+                alert('Speech recognition is not supported in your browser. Please try Chrome or Edge.');
+                return;
+            }
+
+            demoIsRecording = true;
+            demoDuration = 0;
+            demoFillerCounts = { um: 0, like: 0, uh: 0, stutter: 0 };
+            previousFillerCounts = { um: 0, like: 0, uh: 0, stutter: 0 };
+            fullTranscript = ''; // Reset transcript
+            
+            document.getElementById('transcript').innerHTML = '<span class="transcript-placeholder">→ Waiting for speech input...</span>';
+            document.getElementById('count-um').textContent = '0';
+            document.getElementById('count-like').textContent = '0';
+            document.getElementById('count-uh').textContent = '0';
+            document.getElementById('count-stutter').textContent = '0';
+            document.getElementById('timer').textContent = '0:00';
+            
+            // Hide feedback section
+            document.getElementById('feedbackSection').classList.remove('visible');
+
+            const micButton = document.getElementById('micButton');
+            micButton.classList.remove('inactive');
+            micButton.classList.add('active');
+            micButton.innerHTML = '<svg class="mic-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg>';
+            document.getElementById('buttonLabel').textContent = 'Listening...';
+
+            demoRecognition.start();
+            
+            demoTimerInterval = setInterval(() => {
+                demoDuration++;
+                document.getElementById('timer').textContent = formatDemoTime(demoDuration);
+            }, 1000);
+
+            animateDemoVisualizer();
+            const visualizerInterval = setInterval(() => {
+                if (demoIsRecording) {
+                    animateDemoVisualizer();
+                } else {
+                    clearInterval(visualizerInterval);
+                }
+            }, 100);
+        }
+
+        function stopDemoRecording() {
+            demoIsRecording = false;
+            
+            if (demoRecognition) demoRecognition.stop();
+            if (demoTimerInterval) clearInterval(demoTimerInterval);
+
+            const micButton = document.getElementById('micButton');
+            micButton.classList.remove('active');
+            micButton.classList.add('inactive');
+            micButton.innerHTML = '<svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>';
+            document.getElementById('buttonLabel').textContent = 'Tap to Start Analysis';
+
+            animateDemoVisualizer();
+
+            // Show AI feedback if there's transcript
+            const transcript = document.getElementById('transcript').textContent;
+            if (transcript && !transcript.includes('Waiting for speech') && demoDuration > 3) {
+                generateExampleFeedback(demoFillerCounts, demoDuration);
+            }
+        }
+
+        function generateExampleFeedback(fillerCounts, duration) {
+            const feedbackSection = document.getElementById('feedbackSection');
+            const feedbackContent = document.getElementById('feedbackContent');
+            
+            feedbackSection.classList.add('visible');
+            feedbackContent.innerHTML = '<p class="feedback-loading">Analyzing your speech...</p>';
+
+            // Simulate AI processing delay
+            setTimeout(() => {
+                let feedback = '';
+                const totalFillers = fillerCounts.um + fillerCounts.like + fillerCounts.uh;
+                const fillersPerMinute = duration > 0 ? (totalFillers / (duration / 60)).toFixed(1) : 0;
+                const stutterCount = fillerCounts.stutter;
+
+                // Generate personalized feedback based on performance
+                if (totalFillers === 0 && stutterCount === 0) {
+                    feedback = `<strong>Excellent!</strong> You maintained clear, fluent speech throughout your ${duration}-second recording with no detected filler words or stuttering. Your communication was confident and direct. Keep practicing to maintain this excellent clarity!`;
+                } else if (fillersPerMinute < 3 && stutterCount < 2) {
+                    feedback = `<strong>Well done!</strong> You used ${totalFillers} filler word${totalFillers !== 1 ? 's' : ''} ${stutterCount > 0 ? `and ${stutterCount} stutter${stutterCount !== 1 ? 's' : ''}` : ''} during your ${duration}-second session. This is quite good! Try pausing briefly instead of using filler words to give yourself thinking time.`;
+                } else if (fillersPerMinute < 6 || stutterCount < 4) {
+                    feedback = `<strong>Good effort!</strong> In ${duration} seconds, you had ${totalFillers} filler word${totalFillers !== 1 ? 's' : ''} (${fillersPerMinute} per minute)${stutterCount > 0 ? ` and ${stutterCount} repeated word${stutterCount !== 1 ? 's' : ''}` : ''}. Focus on slowing down your pace and taking intentional pauses. With practice, you can reduce these patterns significantly.`;
+                } else {
+                    feedback = `<strong>Room for improvement!</strong> You used ${totalFillers} filler word${totalFillers !== 1 ? 's' : ''}${stutterCount > 0 ? ` and ${stutterCount} word repetition${stutterCount !== 1 ? 's' : ''}` : ''} during your ${duration}-second recording. Try these tips: (1) Slow down your speaking pace, (2) Practice pausing instead of filling silence, (3) Record yourself regularly to build awareness. Consistent practice will help!`;
+                }
+
+                feedbackContent.innerHTML = feedback;
+            }, 3000);
+        }
+
+        document.getElementById('micButton').addEventListener('click', () => {
+            if (demoIsRecording) {
+                stopDemoRecording();
+            } else {
+                startDemoRecording();
+            }
+        });
+
+        animateDemoVisualizer();
+    </script>
+</body>
+</html>
